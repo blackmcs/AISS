@@ -1,5 +1,5 @@
 # AISS
-Automation Installaton Server Script
+#Automation Installaton Server Script
 Скрипт автоустановки и конфигурации сервера, и установкой панели управлениея.
 Так же скрипт добовляет доп скрипты для удобства администрирования
 такие как:
