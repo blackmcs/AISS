@@ -181,7 +181,7 @@ echo " "
     echo "\$(echo \$MountPointInfo | awk '{ print \$3 }')"
     echo ");"
     echo "UsersOnlineCount=\$(users | wc -w);"
-    echo "UsedRAMsize=\$(free | awk 'FNR == 3 {printf('""%.0f""', \$3/(\$3+\$4)*100);}');"
+    echo "UsedRAMsize=\$(free | awk 'FNR == 3 {printf(\'%.0f\', \$3/(\$3+\$4)*100);}');"
     echo "SystemUptime=\$(uptime | sed 's/.*up \([^,]*\), .*/\1/');"
     echo 'echo -e "\e[1;32m          Приведствую тебя мой Хозяин!\e[0m"'
     echo 'echo ""'
