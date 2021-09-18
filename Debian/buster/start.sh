@@ -13,10 +13,6 @@ echo " "
 echo " "
 sleep 3
 
-apt update&&apt upgrade -y
-echo " "
-echo " "
-echo -e "\e[1;32mUpdating System                               OK!\e[0m"
 echo "Install Russian Console Locale (RCL)"
 echo " "
 echo " "
@@ -62,8 +58,7 @@ else
 	echo " "
     echo " "
 fi
-sleep 1
-
+sleep 5
 echo "Добовляю репозитории Yandex.Debian"
 echo " "
 sleep 1
@@ -75,9 +70,10 @@ sleep 1
 } >> /etc/apt/sources.list
 echo " "
 echo -e "\e[1;32mРепозитории, добавленны!\e[0m                                    \e[4;32mОК!\e[0m"
+
 echo "Устанавливаю софт!"
 echo " "
-sleep 2
+sleep 3
 apt update&&apt install -y rar unrar zip unzip nano mc
 echo " "
 
@@ -91,6 +87,7 @@ echo -e "\e[1;32mFail2ban, установлен!\e[0m                           
 sleep 2
 echo "Конфигурирую Fail2ban"
 echo " "
+sleep 2
 service fail2ban start
 {
     echo "[DEFAULT]"
@@ -133,12 +130,12 @@ echo "swap.img/2Gb cоздан и подключен $nameusr!"
 echo " "
 echo " "
 free
-sleep 2
+sleep 3
 echo " "
 echo " "
 echo "Ввожу код безопастности и ускорения системы"
 echo "Выставляю правила использования своп >"
-sleep 2
+sleep 3
 {
     echo "net.ipv4.conf.default.rp_filter = 1"
     echo "net.ipv4.conf.default.accept_source_route = 0"
@@ -213,7 +210,7 @@ echo "входа по логиу/паролю т.е только через кл
 echo " "
 read -p "Будешь, $nameusr, использовать ключи? Y/N: " nextrsa
 if [[ $nextrsa != y ]]; then
-	exit 0
+	echo "Я тебя понял"
 else
 	read -p "$nameusr введи публичный ключ: " rsa
 	mkdir ~/.ssh
@@ -297,185 +294,4 @@ else
 	} >> ~/adddav.sh
 	echo -e "\e[1;32mФайл adddav.sh создан\e[0m                                  \e[4;32mОК!\e[0m"
 	echo " "
-fi
-
-read -p "Хозяин, нужна ли тебе панель управления Y/N: " nextcp
-if [[ $nextcp != y ]]; then
-	exit 0
-else
-	echo -e "                     \e[1;32mУстановка панели управления\e[0m                       "
-	echo -e "                          \e[1;32mУстановка HestiaCP\e[0m                           "
-	echo "Извени $nameusr, на данный момент она самая удобная. Подробности на https://www.hestiacp.com/"	
-	echo "Скачиваю инсталятор"
-	echo " "
-	apt install -y wget
-	wget https://raw.githubusercontent.com/hestiacp/hestiacp/release/install/hst-install.sh
-	echo " "
-	echo -e "\e[1;32mИнсталятор скачан\e[0m                                      \e[4;32mОК!\e[0m"
-	echo "Выбери конфигурацию панели: "
-	read -p "Хозяин, нужен пароль для панели: " pass
-
-	echo "Какой Web-сервер требуется: "
-	echo "1. NGINX+Apache"
-	echo "2. NGINX+PHP-FPM"
-	echo "3. Apache"
-	echo "4. Не нужен"
-	read web
-	#Выбор веб сервера
-	case $web in
-	    1)
-		webv="-n yes -a yes -w no"
-		;;
-	    2)
-		webv="-n yes -w yes -a no"
-		;;
-	    3)
-		webv="-n no -a yes -w no"
-		;;
-	    4)
-		webv="-n no -a no -w no"
-		;;
-	    *)
-		echo "Хмм, Хозяин, вы по-мойму ошиблись с вводом."
-		;;
-	esac
-	#echo $webv
-
-	#выбор для мультиверсий птыхи
-	read -p "Нужен мультиверсии php? Y/N: " nextmult
-	if [[ $nextmult == y ]]; then
-	    multv="-o yes"
-	else
-	    multv="-o no"
-	fi
-	#выбор для DNS
-	read -p "Нужен тебе DNS-server? Y/N" dns
-	#DNS
-	if [[ $dns == y ]]; then
-	    dnsv="-k yes"
-	else
-	    dnsv="-k no"
-	fi
-
-	#FTP
-	echo "Какой ФТП-сервер использовать: "
-	echo "1. VSFTPD"
-	echo "2. PROFTPD"
-	echo "3. Без ФТП"
-	read ftp
-	#ftp
-	#ftpv
-	case $ftp in
-	     1)
-		  ftpv="-v yes -j no"
-		  ;;
-	     2)
-		  ftpv="-v no -j yes"
-		  ;;
-	     3)
-		  ftpv="-v no -j no"
-		  ;;
-	     *)
-		  echo "Хмм, Хозяин, вы по-мойму ошиблись с вводом."
-		  ;;
-	esac
-
-	#firewall
-	echo "Установить firewall? Какая конфигурация нужна, Хозяину: "
-	echo "1. IPTABLES+FAIL2BAN"
-	echo "2. IPTABLES"
-	echo "3. Не нужен"
-	read wall
-	#firewall
-	#wallv
-	case $wall in
-	     1)
-		  wallv="-i yes -b yes"
-		  ;;
-	     2)
-		  wallv="-i yes -b no"
-		  ;;
-	     3)
-		  wallv="-i no -b no"
-		  ;;
-	     *)
-		  echo "Хмм, Хозяин, вы по-мойму ошиблись с вводом."
-		  ;;
-	esac
-
-	#quotes file system
-	read -p "Хозяин, нужны ли квоты файловой системы? Y/N" quots
-	#quotes file system
-	#quotv
-	if [[ $quots == y ]]; then
-	    quotv="-q yes"
-	else
-	    quotv="-q no"
-	fi
-
-	#mail
-	echo "Какой mail-конфигурацию использовать: "
-	echo "1. EXIM + DOVECOT + SPAMASSASSIN + CLAMAV"
-	echo "2. EXIM + DOVECOT + SPAMASSASSIN"
-	echo "3. EXIM + DOVECOT + CLAMAV"
-	echo "4. EXIM + DOVECOT"
-	echo "5. EXIM"
-	echo "6. Не нужена почта"
-	read mail
-	#mail
-	#mailv
-	case $mail in
-	    1)
-		mailv="-x yes -z yes -t yes -c yes"
-		;;
-	    2)
-		mailv="-x yes -z yes -t yes -c no"
-		;;
-	    3)
-		mailv="-x yes -z yes -t no -c yes"
-		;;
-	    4)
-		mailv="-x yes -z yes -t no -c no"
-		;;
-	    5)
-		mailv="-x yes -z np -t no -c no"
-		;;
-	    6)
-		mailv="-x no -z no -t no -c no"
-		;;
-
-	    *)
-		echo "Хмм, Хозяин, вы по-мойму ошиблись с вводом."
-		;;
-	esac
-
-	#data base
-	echo "Какую базуданных установить: "
-	echo "1. MySQL + PostgreSQL"
-	echo "2. PostgreSQL"
-	echo "3. MySQL"
-	echo "4. Не устанавливать"
-	read datab
-	#data base
-	#datav
-	case $datab in
-	    1)
-		datav="-m yes -g yes"
-		;;
-	    2)
-		datav="-m no -g yes"
-		;;
-	    3)
-		datav="-m yes -g no"
-		;;
-	    4)
-		datav="-m no -g no"
-		;;
-	    *)
-		echo "Хмм, Хозяин, вы по-мойму ошиблись с вводом."
-		;;
-	esac
-	str="hst-install.sh -f ${webv} ${multv} ${dnsv} ${ftpv} ${wallv} ${quotv} ${mailv} ${datav} -s ${dom} -e ${email} -p ${pass} -l ru -r 8888"
-	#echo $str
-	bash $str
 fi
