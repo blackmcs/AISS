@@ -59,8 +59,7 @@ echo " "
 echo "Устанавливаю софт!"
 echo " "
 sleep 2
-yum install -y
-p7zip nano mc
+yum install -y p7zip nano mc
 echo " "
 
 echo -e "\e[1;32mCофт, установлен!\e[0m                                           \e[4;32mОК!\e[0m"
